@@ -19,13 +19,25 @@ export default async function ProductsPage({ searchParams }: Props) {
       ? params.category
       : undefined;
 
+  const categoryFilters = selectedCategory
+    ? [
+        selectedCategory,
+        selectedCategory === "cosmetics"
+          ? "مستحضرات التجميل"
+          : undefined,
+      ].filter(Boolean) as string[]
+    : [];
+
   const products = await prisma.product.findMany({
     where: {
       available: true,
-      ...(selectedCategory
+      ...(categoryFilters.length > 0
         ? {
             category: {
-              slug: selectedCategory,
+              OR: [
+                { slug: { in: categoryFilters } },
+                { name: { in: categoryFilters } },
+              ],
             },
           }
         : {}),
