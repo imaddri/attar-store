@@ -64,6 +64,8 @@ export async function addProduct(data: CreateProductInput) {
     },
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/products");
   revalidatePath("/products");
 
@@ -81,6 +83,8 @@ export async function updateProduct(
     data,
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/products");
   revalidatePath("/products");
 
@@ -88,12 +92,22 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string) {
-  await prisma.product.delete({
-    where: {
-      id,
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.orderItem.deleteMany({
+      where: {
+        productId: id,
+      },
+    });
+
+    await tx.product.delete({
+      where: {
+        id,
+      },
+    });
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/products");
   revalidatePath("/products");
 }

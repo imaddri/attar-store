@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { Pencil, Trash2 } from "lucide-react";
@@ -15,6 +16,7 @@ export default function ProductActions({
   id,
 }: Props) {
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
 
   function handleDelete() {
     const confirmed = window.confirm(
@@ -27,6 +29,7 @@ export default function ProductActions({
       try {
         await deleteProduct(id);
 
+        router.refresh();
         toast.success("تم حذف المنتج بنجاح");
       } catch (error) {
         console.error(error);

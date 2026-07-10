@@ -47,6 +47,8 @@ export async function createOrder(data: CreateOrderInput) {
     },
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/orders");
 }
 
@@ -123,6 +125,8 @@ export async function confirmOrder(id: string) {
 
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/orders");
   revalidatePath("/admin/products");
   revalidatePath("/products");
@@ -138,6 +142,8 @@ export async function shipOrder(id: string) {
     },
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/orders");
 }
 
@@ -151,16 +157,28 @@ export async function deliverOrder(id: string) {
     },
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/orders");
 }
 
 export async function deleteOrder(id: string) {
-  await prisma.order.delete({
-    where: {
-      id,
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.orderItem.deleteMany({
+      where: {
+        orderId: id,
+      },
+    });
+
+    await tx.order.delete({
+      where: {
+        id,
+      },
+    });
   });
 
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/inventory");
   revalidatePath("/admin/orders");
 }
 
