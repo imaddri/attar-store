@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import StoreLayout from "@/components/layout/StoreLayout";
 import ProductsHeader from "@/components/products/ProductsHeader";
 import ProductGrid from "@/components/products/ProductGrid";
