@@ -26,6 +26,10 @@ async function main() {
       name: "المكسرات",
       slug: "nuts",
     },
+    {
+      name: "مستحضرات التجميل",
+      slug: "cosmetics",
+    },
   ];
 
   for (const category of categories) {
