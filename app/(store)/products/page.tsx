@@ -20,12 +20,18 @@ export default async function ProductsPage({ searchParams }: Props) {
       : undefined;
 
   const categoryFilters = selectedCategory
-    ? [
-        selectedCategory,
-        selectedCategory === "cosmetics"
-          ? "مستحضرات التجميل"
-          : undefined,
-      ].filter(Boolean) as string[]
+    ? (
+        [
+          selectedCategory,
+          selectedCategory.toLowerCase(),
+          selectedCategory.toUpperCase(),
+          // common Arabic name for cosmetics
+          ...(selectedCategory.toLowerCase() === "cosmetics" ? ["مستحضرات التجميل"] : []),
+        ]
+          .filter(Boolean)
+          // remove duplicates
+          .filter((v, i, a) => a.indexOf(v) === i) as string[]
+      )
     : [];
 
   const products = await prisma.product.findMany({
@@ -35,6 +41,7 @@ export default async function ProductsPage({ searchParams }: Props) {
         ? {
             category: {
               OR: [
+                // match by slug or name with multiple variations
                 { slug: { in: categoryFilters } },
                 { name: { in: categoryFilters } },
               ],
