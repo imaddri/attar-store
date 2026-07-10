@@ -1,0 +1,39 @@
+@media print {
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  #invoice {
+    width: 100%;
+    max-width: 100%;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 18px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  header,
+  section,
+  table,
+  tbody,
+  tr,
+  td,
+  div {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  button {
+    display: none !important;
+  }
+}
