@@ -25,52 +25,33 @@ export default async function ProductsPage({ searchParams }: Props) {
   let products;
 
   if (selectedCategory) {
-    const slugCandidate = selectedCategory.toLowerCase();
-
-    // try to find by slug first
-    let category = await prisma.category.findFirst({
+    products = await prisma.product.findMany({
       where: {
-        slug: slugCandidate,
+        available: true,
+        category: {
+          OR: [
+            {
+              slug: {
+                equals: selectedCategory,
+                mode: "insensitive",
+              },
+            },
+            {
+              name: {
+                equals: selectedCategory,
+                mode: "insensitive",
+              },
+            },
+          ],
+        },
+      },
+      include: {
+        category: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
-
-    // try match by name (case-insensitive)
-    if (!category) {
-      category = await prisma.category.findFirst({
-        where: {
-          name: {
-            equals: selectedCategory,
-            mode: "insensitive",
-          },
-        },
-      });
-    }
-
-    // special-case common Arabic name
-    if (!category && slugCandidate === "cosmetics") {
-      category = await prisma.category.findFirst({
-        where: {
-          name: "مستحضرات التجميل",
-        },
-      });
-    }
-
-    if (category) {
-      products = await prisma.product.findMany({
-        where: {
-          available: true,
-          categoryId: category.id,
-        },
-        include: {
-          category: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    } else {
-      products = [];
-    }
   } else {
     products = await prisma.product.findMany({
       where: {
