@@ -30,7 +30,7 @@ export default function ProductDetails({
       <div>
 
         <span className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700">
-          {product.category.name}
+          {product.category?.name ?? "غير مصنف"}
         </span>
 
         <h1 className="mt-5 text-5xl font-bold text-zinc-900">

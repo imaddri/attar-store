@@ -27,10 +27,10 @@ export default function ProductCard({
         <CardContent className="space-y-5 p-6">
 
           <ProductInfo
-  category={product.category.name}
-  name={product.name}
-  description={product.description}
-/>
+            category={product.category?.name ?? "غير مصنف"}
+            name={product.name}
+            description={product.description}
+          />
 
           <ProductPrice
             price={product.price}

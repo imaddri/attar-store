@@ -38,6 +38,12 @@ export default async function ProductPage({
       },
       available: true,
     },
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
     take: 4,
   });
 
