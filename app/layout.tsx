@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
 import "./print.css";
+import { Toaster } from "sonner";
+
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   variable: "--font-cairo",
@@ -11,8 +12,13 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   title: "عطارة عدائكة",
   description: "متجر إلكتروني احترافي للعطارة",
+
   icons: {
     icon: "/logo.svg",
+  },
+
+  verification: {
+    google: "_e5KojoNWDHjqna7mnfJXtbh-WilimBoQVOYM-NnCCs",
   },
 };
 

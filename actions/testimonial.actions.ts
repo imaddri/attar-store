@@ -21,6 +21,7 @@ export async function createTestimonial(
   });
 
   revalidatePath("/");
+  revalidatePath("/admin/testimonials");
 }
 
 export async function getTestimonials() {
@@ -57,6 +58,7 @@ export async function approveTestimonial(id: string) {
 
   revalidatePath("/");
   revalidatePath("/admin/testimonials");
+  revalidatePath("/admin/dashboard");
 }
 
 export async function deleteTestimonial(id: string) {
